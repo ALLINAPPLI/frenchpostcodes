@@ -1,15 +1,15 @@
 # frenchcodepostaux
 
-![Screenshot](/images/screenshot.png)
+![Screenshot](/images/FrencheCodePostaux.png)
 
-(*FIXME: In one or two paragraphs, describe what the extension does and why one would download it. *)
+This extension searches for cities or French postal codes after entering a postal code or a city
 
 The extension is licensed under [AGPL-3.0](LICENSE.txt).
 
 ## Requirements
 
 * PHP v7.2+
-* CiviCRM (*FIXME: Version number*)
+* CiviCRM 5.41, 5.42, 5.43
 
 ## Installation (Web UI)
 
@@ -34,11 +34,3 @@ install it with the command-line tool [cv](https://github.com/civicrm/cv).
 git clone https://github.com/FIXME/frenchcodepostaux.git
 cv en frenchcodepostaux
 ```
-
-## Getting Started
-
-(* FIXME: Where would a new user navigate to get started? What changes would they see? *)
-
-## Known Issues
-
-(* FIXME *)

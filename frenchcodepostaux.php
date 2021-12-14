@@ -151,7 +151,6 @@ function frenchcodepostaux_civicrm_themes(&$themes) {
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_preProcess
  */
 //function frenchcodepostaux_civicrm_preProcess($formName, &$form) {
-//
 //}
 
 /**
@@ -160,105 +159,15 @@ function frenchcodepostaux_civicrm_themes(&$themes) {
  * @link https://docs.civicrm.org/dev/en/latest/hooks/hook_civicrm_navigationMenu
  */
 //function frenchcodepostaux_civicrm_navigationMenu(&$menu) {
-//  _frenchcodepostaux_civix_insert_navigation_menu($menu, 'Mailings', array(
-//    'label' => E::ts('New subliminal message'),
-//    'name' => 'mailing_subliminal_message',
-//    'url' => 'civicrm/mailing/subliminal',
-//    'permission' => 'access CiviMail',
-//    'operator' => 'OR',
-//    'separator' => 0,
-//  ));
-//  _frenchcodepostaux_civix_navigationMenu($menu);
 //}
-
-// function frenchcodepostaux_civicrm_buildForm($formName, &$form) {
-//   //  if ($formName == 'CRM_Contact_Form_Contact') {
-//   //    CRM_Core_Resources::singleton()->addScriptFile('belgianpostcodes', 'postcodes.js');
-//   //    CRM_Belgianpostcodes_Parser::buildAddressForm($form);
-//   //    CRM_Belgianpostcodes_Parser::setStreetAddressOnForm($form);
-
-//   //  }
-//   if ($formName == 'CRM_Contact_Form_Inline_Address') {
-//     CRM_Frenchcodepostaux_Parser::buildAddressForm($form);
-//     CRM_Frenchcodepostaux_Parser::setStreetAddressOnForm($form);
-//   }
-// }
-
-
 function frenchcodepostaux_civicrm_alterContent(  &$content, $context, $tplName, &$object ) {
-  //if ($object instanceof CRM_Contact_Form_Inline_Address) {
-    //CRM_Utils_Request Gere les requête http : https://doc.symbiotic.coop/dev/civicrm/v5.20/phpdoc/CRM_Utils_Request.html#method_retrieve
-
-    $locBlockNo_fr = CRM_Utils_Request::retrieve('locno', 'Positive', CRM_Core_DAO::$_nullObject, FALSE, NULL, $_REQUEST);
-    $template_fr = CRM_Core_Smarty::singleton();
-    $template_fr->assign('blockId', $locBlockNo_fr);
-    $template_fr->assign('zipcodesss',json_encode(frenchcodepostaux_get_all()));
-    $content .= $template_fr->fetch('CRM/Contact/Form/Edit/Address/postcode_js.tpl');
-    //$content .= $template_fr->fetch('template_frs/Address/postcode_js.tpl'); 
-  //}
-  //   if ($object instanceof CRM_Contact_Form_Contact) {
-  //     $template_fr = CRM_Core_Smarty::singleton();
-  //     $template_fr->assign('zipcodes', json_encode(frenchcodepostaux_get_all()));
-  //    $content .= $template_fr->fetch('CRM/Contact/Form/Edit/postcode_contact_js.tpl');
-  //  }
+  $locBlockNo_fr = CRM_Utils_Request::retrieve('locno', 'Positive', CRM_Core_DAO::$_nullObject, FALSE, NULL, $_REQUEST);
+  $template_fr = CRM_Core_Smarty::singleton();
+  $template_fr->assign('blockId', $locBlockNo_fr);
+  $template_fr->assign('zipcodesss',json_encode(frenchcodepostaux_get_all()));
+  $content .= $template_fr->fetch('CRM/Contact/Form/Edit/Address/postcode_js.tpl');
 }
-
-
-
-//call sql data code post french 
-function frenchcodepostaux_get_all() {
-//   //call api
-//   // var_dump($_GET['callapi']);
-//   // var_dump($_POST['callapi']);
-//   $call=$_POST['searchTerm'];
-// 	$curl = curl_init();
-// 	//var_dump($curl);
-// 	curl_setopt_array($curl, [
-// 		//CURLOPT_URL => "https://datanova.laposte.fr/api/records/1.0/search/?dataset=laposte_hexasmal&q=$call&facet=code_commune_insee&facet=nom_de_la_commune&facet=code_postal&facet=ligne_5",
-// 		CURLOPT_RETURNTRANSFER => true
-// 	]);
-// 	$data = curl_exec($curl);
-// 	if( $data === false || curl_getinfo($curl, CURLINFO_HTTP_CODE) !== 200){
-// 		return null;
-// 	}
-// 	$zipcodes =[];
-// 	$data = json_decode($data, true);
-// 	foreach($data['records'] as $codepostaux) {
-// 		$zipcodes[] = [
-// 		'zip' => $codepostaux['fields']['code_postal'],
-// 		'city' => $codepostaux['fields']['nom_de_la_commune']
-// 		];
-// 	}
-// 	//var_dump($zipcodes);
-// 	return $zipcodes;
-}
-
-
-// if (isset($_GET['call'])) {
-//   $getZip = frenchcodepostaux_get_all($_GET['call']);
-//   $zipList = [];
-//   $data = json_decode($getZip, true);
-//   foreach($data as $zip){
-//   $zipList[] = [
-//       'zip' => $zip['fields']['code_postal'],
-//     ]; 
-//   }
-//   echo json_encode($zipList);
-//   var_dump($zipList);
-// }
-
-// function frenchcodepostaux_get_all() {
-//   $location_qry_str = "
-//     SELECT Nom_commune, Code_postal
-//     FROM frenchcodeposte
-//     ORDER BY `Nom_commune`, `Code_postal` ASC";
-//   $zipcodes = array();
-//   $dao = CRM_Core_DAO::executeQuery($location_qry_str);
-//   while ($dao->fetch()) {
-//     $zipcodes[$dao->Code_postal.' '.$dao->Nom_commune] = array('zip' => $dao->Code_postal, 'city' => $dao->Nom_commune);
-//   }
-//   return $zipcodes;
-// }
+function frenchcodepostaux_get_all() { }
 
 function frenchcodepostaux_civicrm_pageRun( &$page ) {
   if ($page instanceof CRM_Contact_Page_View_Summary) {
