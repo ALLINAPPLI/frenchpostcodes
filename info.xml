@@ -2,7 +2,7 @@
 <extension key="frenchcodepostaux" type="module">
   <file>frenchcodepostaux</file>
   <name>frenchcodepostaux</name>
-  <description>frenchcodepostaux</description>
+    <description>This extension searches for cities or French postal codes after entering a postal code or a city</description>
   <license>AGPL-3.0</license>
   <maintainer>
     <author>Renaud Fradin and Fawzy Elsam</author>
