@@ -2,6 +2,10 @@
 
 ![Screenshot](/images/FrencheCodePostaux.png)
 
+![screenshot](https://user-images.githubusercontent.com/62597730/146753833-187cd6ce-c6da-4c96-aee0-27fbb44c7f83.png)
+
+
+
 This extension searches for cities or French postal codes after entering a postal code or a city
 
 The extension is licensed under [AGPL-3.0](LICENSE.txt).
