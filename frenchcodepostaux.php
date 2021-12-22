@@ -160,17 +160,39 @@ function frenchcodepostaux_civicrm_themes(&$themes) {
  */
 //function frenchcodepostaux_civicrm_navigationMenu(&$menu) {
 //}
-function frenchcodepostaux_civicrm_alterContent(  &$content, $context, $tplName, &$object ) {
-  $locBlockNo_fr = CRM_Utils_Request::retrieve('locno', 'Positive', CRM_Core_DAO::$_nullObject, FALSE, NULL, $_REQUEST);
-  $template_fr = CRM_Core_Smarty::singleton();
-  $template_fr->assign('blockId', $locBlockNo_fr);
-  $template_fr->assign('zipcodesss',json_encode(frenchcodepostaux_get_all()));
-  $content .= $template_fr->fetch('CRM/Contact/Form/Edit/Address/postcode_js.tpl');
+
+function frenchcodepostaux_civicrm_buildForm($formName, &$form) {
+  if ($formName == 'CRM_Contact_Form_Contact') {
+    CRM_Core_Resources::singleton()->addScriptFile('frenchcodepostaux', 'postcodes.js');
+    CRM_Frenchpostcodes_Parser::buildAddressForm($form);
+    CRM_Frenchpostcodes_Parser::setStreetAddressOnForm($form);
+  }
+  if ($formName == 'CRM_Contact_Form_Inline_Address') {
+    CRM_Frenchpostcodes_Parser::buildAddressForm($form);
+    CRM_Frenchpostcodes_Parser::setStreetAddressOnForm($form);
+  }
 }
+
+
+function frenchcodepostaux_civicrm_alterContent(  &$content, $context, $tplName, &$object ) {
+  if ($object instanceof CRM_Contact_Form_Inline_Address) {
+    $locBlockNo_fr = CRM_Utils_Request::retrieve('locno', 'Positive', CRM_Core_DAO::$_nullObject, TRUE, NULL, $_REQUEST);
+    $template_fr = CRM_Core_Smarty::singleton();
+    $template_fr->assign('blockId', $locBlockNo_fr);
+    $template_fr->assign('zipcodesss',json_encode(frenchcodepostaux_get_all()));
+    $content .= $template_fr->fetch('CRM/Contact/Form/Edit/Address/postcode_js.tpl');
+  }
+  if ($object instanceof CRM_Contact_Form_Contact) {
+    $template_fr = CRM_Core_Smarty::singleton();
+    $template_fr->assign('zipcodesss', json_encode(frenchcodepostaux_get_all()));
+    $content .= $template_fr->fetch('CRM/Contact/Form/Edit/postcode_contact_js.tpl');
+  }
+}
+
 function frenchcodepostaux_get_all() { }
 
 function frenchcodepostaux_civicrm_pageRun( &$page ) {
   if ($page instanceof CRM_Contact_Page_View_Summary) {
     CRM_Core_Resources::singleton()->addScriptFile('frenchcodepostaux', 'postcodes.js');
   }
- }
+}

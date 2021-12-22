@@ -1,9 +1,11 @@
 function formatResult(state) {
-    return '<div>' + state.code_postal + ' - ' + state.nom_de_la_commune + '</div>';
+    let state1 = state.properties;
+    return '<div>' + state1.city + ' - ' + state1.postcode + ' - ' + state1.name + ' - ' + state1.context + '</div>';
 }
 
 function formatSelection(state) {
-    return state.nom_de_la_commune + ' / ' + state.code_postal;
+    let state1 = state.properties;
+    return '<div>' + state1.city + ' / ' + state1.postcode + ' / ' + state1.name + ' / ' + state1.context + '</div>';
 }
 
 function formatNoResult() {
@@ -11,7 +13,7 @@ function formatNoResult() {
 }
 
 function formatRecherche() {
-    return 'Recherche de ville ou de code postal';
+    return 'Rechercher une adresse , une ville ou un code postal';
 }
 
 function formatAjaxErreur() {
@@ -28,11 +30,22 @@ function zipcodes_addOnChange_fr(blockId) {
     });
 }
 
+function functionId(state) {
+    let state1 = state.properties;
+    return state1.city + ' / ' + state1.postcode + ' / ' + state1.name + ' / ' + state1.context + ' / ' + state1.x + ' / ' + state1.y; 
+}
+
 function zipcodes_fill_fr(blockId) {
     var zipcode = cj('#zipcode_lookup').val();
     console.log(zipcode);
-    const words = zipcode.split("-");
-    console.log(words);
+    const words = zipcode.split("/");
+    let ville = words[0].trim();
+    let codePost = words[2].trim();
+    if (ville == codePost) {
+        cj('#address_' + blockId + '_street_address').val("");
+    }else{
+        cj('#address_' + blockId + '_street_address').val(words[2]);
+    }
     cj('#address_' + blockId + '_postal_code').val(words[1]);
     cj('#address_' + blockId + '_city').val(words[0]);
 }
@@ -40,7 +53,6 @@ function zipcodes_fill_fr(blockId) {
 function init_postcodeBlock_fr(blockId, address_table_id) {
     var city_field_td = cj(address_table_id + ' #address_'+blockId+'_city').parent();
     var postalcode_field_td = cj(address_table_id + ' #address_'+blockId+'_postal_code').parent();
-    //postalcode_field_td.detach();
     city_field_td.parent().prepend(postalcode_field_td);
     var first_row = city_field_td.parent().parent().parent().parent().parent();
     first_row.before(zipcodes_getRowHtml_fr(blockId));
@@ -57,9 +69,8 @@ function init_postcodeBlock_fr(blockId, address_table_id) {
             quietMillis: 250,
             cache: true,
             url: function (term) {
-                let totalResult = -1;
-                let baseUrl = "https://datanova.laposte.fr/api/records/1.0/search/?dataset=laposte_hexasmal";
-                let queryUrl = baseUrl +"&q=" + term + "&rows=" + totalResult + "&facet=code_commune_insee&facet=nom_de_la_commune&facet=code_postal&facet=ligne_5";
+                let baseUrl = "https://api-adresse.data.gouv.fr/search/"
+                let queryUrl = baseUrl +"?q=" + term + "&autocomplete=1";
                 return queryUrl; 
             },
             data: function (term, page) {
@@ -69,12 +80,14 @@ function init_postcodeBlock_fr(blockId, address_table_id) {
                 };
             },
             results: function (data) {
-                var resultsData = [];
-                resultsData = _.chain(data.records).pluck('fields').filter(function(i, item){ 
-                    return !item.chain;              
-                }); 
-                let data2 = resultsData._wrapped
-                return { results: data2}
+                var data1 = data.features;
+                data1.forEach(obj => {
+                    Object.entries(obj).forEach(([key, value]) => {
+                        //console.log(obj.properties);
+                    });
+                });
+                let data2 = data1;
+                return { results: data2 }
             },
             
         },
@@ -88,7 +101,7 @@ function init_postcodeBlock_fr(blockId, address_table_id) {
         formatInputTooShort: formatInputSearch,
         dropdownCssClass: "bigdrop",
         /** Id : option OBLIGATOIRE pour pouvoir selectionner une valeur  */
-        id: function(state) { return state.nom_de_la_commune + ' - ' + state.code_postal; },
+        id: functionId,
         escapeMarkup: function (html) { return html; },
         
     });
@@ -124,4 +137,8 @@ function zipcodes_getRowHtml_fr(blockId) {
     html = html + '</td>';
     html = html + '</tr>';
     return html;
+}
+
+function zipcodes_reset() {
+    cj('.zipcodes_input_row').remove();
 }
