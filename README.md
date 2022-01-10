@@ -1,6 +1,8 @@
 # frenchcodepostaux
 
-![Screenshot](/images/FrencheCodePostaux.png)
+![Screenshot](/images/FrenchCodePostaux.png)
+![Screenshot](/images/CodePostaux.png)
+
 
 This extension searches for cities or French postal codes after entering a postal code or a city
 
