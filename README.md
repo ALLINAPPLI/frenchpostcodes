@@ -6,7 +6,8 @@
 
 This extension searches for cities or French postal codes after entering a postal code or a city
 
-Make sure that the country case in the Change Address section is activated on : Administer > Localization > Address Settings
+Attention for the good functioning of the extension check that the country case of the part Modification of the address and well activated on :
+Administer > Localization > Address Settings
 
 
 The extension is licensed under [AGPL-3.0](LICENSE.txt).
