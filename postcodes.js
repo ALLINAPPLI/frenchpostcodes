@@ -51,6 +51,7 @@ function zipcodes_fill_fr(blockId) {
 }
 
 function init_postcodeBlock_fr(blockId, address_table_id) {
+
     var city_field_td = cj(address_table_id + ' #address_'+blockId+'_city').parent();
     var postalcode_field_td = cj(address_table_id + ' #address_'+blockId+'_postal_code').parent();
     city_field_td.parent().prepend(postalcode_field_td);
@@ -60,7 +61,7 @@ function init_postcodeBlock_fr(blockId, address_table_id) {
     /*---Barre de recherche ---*/
     cj('#zipcode_lookup').select2({
         minimumInputLength: 2,
-        placeholder: 'Un code postal ou une ville',
+        placeholder: 'Saisissez une adresse, un code postal ou une ville',
         theme: "classic",
         closeOnSelect: true,
         multiple: false,
@@ -110,34 +111,117 @@ function init_postcodeBlock_fr(blockId, address_table_id) {
      /*----- affichage de la section déroulante ---*/
     
     cj('#address_' + blockId + '_country_id').change(function(e) {
+
         var housenr_td = cj('#address_'+blockId+'_street_number').parent();
         var street_name_td = cj('#address_'+blockId+'_street_name').parent();
-        if ((cj('#address_' + blockId + '_country_id').val()) == 1076) {
+        
+        if ((cj('#address_' + blockId + '_country_id').val()) == 1076 && (cj('#address_' + blockId + '_city').val()) == '' ) {
+            
             if (typeof processAddressFields == 'function' && cj('#addressElements_'+blockId).length < 0) {
+
                 processAddressFields('addressElements', blockId, 1);
                 cj('#addressElements_' + blockId).show();
                 cj('#streetAddress_' + blockId).hide();
+
             }
+
+            cj('td').css({ "border": "none" });
+
             cj(street_name_td).after(cj(housenr_td));
             cj('#zipcodes_input_row_'+blockId).removeClass('hiddenElement');
+
+            cj('#streetAddress_' + blockId).addClass('hiddenElement');
+
+            cj('#labelCity').addClass('hiddenElement');
+
+            cj('#address_' + blockId + '_supplemental_address_1').addClass('hiddenElement');
+            cj('label[for="address_1_supplemental_address_1"]').addClass('hiddenElement');
+        
+            cj('#address_' + blockId + '_supplemental_address_2').addClass('hiddenElement');
+            cj('label[for="address_1_supplemental_address_2"]').addClass('hiddenElement');
+        
+            cj('#address_' + blockId + '_supplemental_address_3').addClass('hiddenElement');
+            cj('label[for="address_1_supplemental_address_3"]').addClass('hiddenElement');
+        
+            cj('#address_' + blockId + '_postal_code').addClass('hiddenElement');
+            cj('label[for="address_1_postal_code"]').addClass('hiddenElement');
+        
+            cj('#address_' + blockId + '_city').addClass('hiddenElement');
+            cj('label[for="address_1_city"]').addClass('hiddenElement');
+        
         } else {
+
             cj(housenr_td).after(cj(street_name_td));
-            cj('#zipcodes_input_row_'+blockId).addClass('hiddenElement');
+            
+            cj('#zipcodes_input_row_'+blockId).removeClass('hiddenElement');
+
+            cj('#labelCity').removeClass('hiddenElement');
+
+            cj('#streetAddress_' + blockId).removeClass('hiddenElement');
+
+            cj('#address_' + blockId + '_supplemental_address_1').removeClass('hiddenElement');
+            cj('label[for="address_1_supplemental_address_1"]').removeClass('hiddenElement');
+            
+            cj('#address_' + blockId + '_supplemental_address_2').removeClass('hiddenElement');
+            cj('label[for="address_1_supplemental_address_2"]').removeClass('hiddenElement');
+            
+            cj('#address_' + blockId + '_supplemental_address_3').removeClass('hiddenElement');
+            cj('label[for="address_1_supplemental_address_3"]').removeClass('hiddenElement');
+            
+            cj('#address_' + blockId + '_postal_code').removeClass('hiddenElement');
+            cj('label[for="address_1_postal_code"]').removeClass('hiddenElement');
+
+            cj('#address_' + blockId + '_city').removeClass('hiddenElement');  
+            cj('label[for="address_1_city"]').removeClass('hiddenElement');
         }
     });
+
+
+    /*-- afficher les champ apres le remplissage de la section déroulante */
+   
+    // cj('#zipcode_lookup').change(function(e) {
+    //     if ((cj('#zipcode_lookup').val()) != ''){
+
+    //         cj(housenr_td).after(cj(street_name_td));
+    //         cj('#zipcodes_input_row_'+blockId).removeClass('hiddenElement');
+
+    //         cj('#streetAddress_' + blockId).removeClass('hiddenElement');
+
+    //         cj('#address_' + blockId + '_supplemental_address_1').removeClass('hiddenElement');
+    //         cj('label[for="address_1_supplemental_address_1"]').removeClass('hiddenElement');
+            
+    //         cj('#address_' + blockId + '_supplemental_address_2').removeClass('hiddenElement');
+    //         cj('label[for="address_1_supplemental_address_2"]').removeClass('hiddenElement');
+            
+    //         cj('#address_' + blockId + '_supplemental_address_3').removeClass('hiddenElement');
+    //         cj('label[for="address_1_supplemental_address_3"]').removeClass('hiddenElement');
+            
+    //         cj('#address_' + blockId + '_postal_code').removeClass('hiddenElement');
+    //         cj('label[for="address_1_postal_code"]').removeClass('hiddenElement');
+
+    //         cj('#address_' + blockId + '_city').removeClass('hiddenElement');  
+    //         cj('label[for="address_1_city"]').removeClass('hiddenElement');
+    //     }
+    // });
 
     cj('#address_' + blockId + '_country_id').trigger('change');
 }
 
+
+
 function zipcodes_getRowHtml_fr(blockId) {
     var html = '<tr class="zipcodes_input_row" id="zipcodes_input_row_'+blockId+'">';
     html = html + '<td>';
-    html = html + 'Recherche de Codes Postaux et villes francaises<br>';
-    html = html + '<input id="zipcode_lookup" style="width:100%" type="text">';
+    html = html + '<label id="labelCity"for="city"><b>Ou chercher une adresse :<b/></label><br />';
+    html = html + '<br />';
+    html = html + '<input name="city" id="zipcode_lookup" style="width:100%" type="text">';
     html = html + '</td>';
     html = html + '</tr>';
+    html = html + '<br />';
     return html;
 }
+
+
 
 function zipcodes_reset() {
     cj('.zipcodes_input_row').remove();
