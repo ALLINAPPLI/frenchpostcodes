@@ -177,36 +177,8 @@ function init_postcodeBlock_fr(blockId, address_table_id) {
     });
 
 
-    /*-- afficher les champ apres le remplissage de la section déroulante */
-   
-    // cj('#zipcode_lookup').change(function(e) {
-    //     if ((cj('#zipcode_lookup').val()) != ''){
-
-    //         cj(housenr_td).after(cj(street_name_td));
-    //         cj('#zipcodes_input_row_'+blockId).removeClass('hiddenElement');
-
-    //         cj('#streetAddress_' + blockId).removeClass('hiddenElement');
-
-    //         cj('#address_' + blockId + '_supplemental_address_1').removeClass('hiddenElement');
-    //         cj('label[for="address_1_supplemental_address_1"]').removeClass('hiddenElement');
-            
-    //         cj('#address_' + blockId + '_supplemental_address_2').removeClass('hiddenElement');
-    //         cj('label[for="address_1_supplemental_address_2"]').removeClass('hiddenElement');
-            
-    //         cj('#address_' + blockId + '_supplemental_address_3').removeClass('hiddenElement');
-    //         cj('label[for="address_1_supplemental_address_3"]').removeClass('hiddenElement');
-            
-    //         cj('#address_' + blockId + '_postal_code').removeClass('hiddenElement');
-    //         cj('label[for="address_1_postal_code"]').removeClass('hiddenElement');
-
-    //         cj('#address_' + blockId + '_city').removeClass('hiddenElement');  
-    //         cj('label[for="address_1_city"]').removeClass('hiddenElement');
-    //     }
-    // });
-
     cj('#address_' + blockId + '_country_id').trigger('change');
 }
-
 
 
 function zipcodes_getRowHtml_fr(blockId) {
