@@ -58,6 +58,10 @@ function init_postcodeBlock_fr(blockId, address_table_id) {
     var first_row = city_field_td.parent().parent().parent().parent().parent();
     first_row.before(zipcodes_getRowHtml_fr(blockId));
     
+    var country = 1076;
+    cj('#address_' + blockId + '_country_id').val(country);
+    
+
     /*---Barre de recherche ---*/
     cj('#zipcode_lookup').select2({
         minimumInputLength: 2,
@@ -149,10 +153,32 @@ function init_postcodeBlock_fr(blockId, address_table_id) {
             cj('#address_' + blockId + '_city').addClass('hiddenElement');
             cj('label[for="address_1_city"]').addClass('hiddenElement');
         
-        } else {
+        } 
+        
+        else {
 
-            cj(housenr_td).after(cj(street_name_td));
+            cj('#zipcodes_input_row_'+blockId).addClass('hiddenElement');
+
+            cj('#streetAddress_' + blockId).removeClass('hiddenElement');
+
+            cj('#address_' + blockId + '_supplemental_address_1').removeClass('hiddenElement');
+            cj('label[for="address_1_supplemental_address_1"]').removeClass('hiddenElement');
             
+            cj('#address_' + blockId + '_supplemental_address_2').removeClass('hiddenElement');
+            cj('label[for="address_1_supplemental_address_2"]').removeClass('hiddenElement');
+            
+            cj('#address_' + blockId + '_supplemental_address_3').removeClass('hiddenElement');
+            cj('label[for="address_1_supplemental_address_3"]').removeClass('hiddenElement');
+            
+            cj('#address_' + blockId + '_postal_code').removeClass('hiddenElement');
+            cj('label[for="address_1_postal_code"]').removeClass('hiddenElement');
+
+            cj('#address_' + blockId + '_city').removeClass('hiddenElement');  
+            cj('label[for="address_1_city"]').removeClass('hiddenElement');
+        }
+
+        if ((cj('#address_' + blockId + '_country_id').val()) == 1076 && (cj('#address_' + blockId + '_city').val()) != '' ){
+           
             cj('#zipcodes_input_row_'+blockId).removeClass('hiddenElement');
 
             cj('#labelCity').removeClass('hiddenElement');
@@ -174,11 +200,13 @@ function init_postcodeBlock_fr(blockId, address_table_id) {
             cj('#address_' + blockId + '_city').removeClass('hiddenElement');  
             cj('label[for="address_1_city"]').removeClass('hiddenElement');
         }
+   
     });
 
 
     cj('#address_' + blockId + '_country_id').trigger('change');
 }
+
 
 
 function zipcodes_getRowHtml_fr(blockId) {
