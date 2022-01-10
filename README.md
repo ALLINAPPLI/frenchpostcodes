@@ -6,8 +6,10 @@
 
 This extension searches for cities or French postal codes after entering a postal code or a city
 
-Attention for the good functioning of the extension check that the country case of the part Modification of the address and well activated on :
-Administer > Localization > Address Settings
+This extension searches for street addresses, postal codes or cities in France using the public open data tool https://adresse.data.gouv.fr/api-doc/adresse.
+It works with either entering a street address, a postal code or a city name and provides an auto-completion with an AJAX UI.
+The selector will be only exposed when the country for the address is based in France.
+Attention: for the good functioning of the extension, check that the Country field is selected (check box to tick) in Administer > Localization > Address Settings > Address Editing
 
 
 The extension is licensed under [AGPL-3.0](LICENSE.txt).
