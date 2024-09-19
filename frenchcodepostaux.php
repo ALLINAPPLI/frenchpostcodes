@@ -200,9 +200,22 @@ function frenchcodepostaux_civicrm_alterContent(  &$content, $context, $tplName,
 function frenchcodepostaux_get_all() { }
   
   function frenchcodepostaux_civicrm_postProcess($formName, $form) {
-    if($formName == 'CRM_Profile_Form_Edit') {
+    $customFieldApiBan = CRM_Frenchpostcodes_Utils::getCustomfieldByNameMachine();
+    $elementIndex = $form->_elementIndex;
+    $verifKey = array_key_exists($customFieldApiBan,$elementIndex);
+    if($formName == 'CRM_Profile_Form_Edit' && $verifKey == TRUE) {
+      $submitValuesForm = $form->getVar('_submitValues');
+      $valueRequestApiBan = '';
+      foreach ($submitValuesForm as $key => $value) {
+        if($key == $customFieldApiBan) {
+          $valueRequestApiBan = $value;
+        }
+      }
+      $latLon = CRM_Frenchpostcodes_Utils::getLatLonAfterSubmitForm($valueRequestApiBan);
+      
       echo '<pre>';
-      var_dump($form);
+      var_dump($verifKey);
+      //var_dump($form);
       die();
       echo '</pre>';
     }

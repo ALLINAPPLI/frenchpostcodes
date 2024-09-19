@@ -75,6 +75,10 @@ class CRM_Frenchpostcodes_Parser {
         }
         }
     }
+    
+    public static function callApiBanWithLatLon($lattitudeLongitude) {
+    
+    }
 }
 
 
