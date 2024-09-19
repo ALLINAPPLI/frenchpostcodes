@@ -211,10 +211,10 @@ function frenchcodepostaux_get_all() { }
           $valueRequestApiBan = $value;
         }
       }
-      $latLon = CRM_Frenchpostcodes_Utils::getLatLonAfterSubmitForm($valueRequestApiBan);
       
+      CRM_Frenchpostcodes_Parser::callApiBanWithLatLon($valueRequestApiBan);
       echo '<pre>';
-      var_dump($verifKey);
+      var_dump($valueRequestApiBan);
       //var_dump($form);
       die();
       echo '</pre>';

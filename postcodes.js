@@ -42,7 +42,8 @@ function zipcodes_addOnChange_fr(blockId) {
 
 function functionId(state) {
     let state1 = state.properties;
-    return state1.city + ' / ' + state1.postcode + ' / ' + state1.name + ' / ' + state1.context + ' / ' + state1.x + ' / ' + state1.y; 
+    let geometry = state.geometry;
+    return state1.city + ' / ' + state1.postcode + ' / ' + state1.name + ' / ' + state1.context + ' / ' + state1.x + ' / ' + state1.y + ' / ' + geometry.coordinates[0] + ' / ' + geometry.coordinates[1];
 }
 
 function zipcodes_fill_fr(blockId) {
