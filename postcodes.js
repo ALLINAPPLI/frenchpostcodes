@@ -1,3 +1,13 @@
+const wpFrontOrNot = document.body.classList.contains('page-template-default');
+if(wpFrontOrNot) {
+    const addressField = document.querySelector('[data-crm-custom="Champs_saisie_adresse_France:Saisie_Adresse_api_BAN"]');
+    if(addressField){
+        let parentWidth = addressField.parentNode.clientWidth;
+        addressField.setAttribute('id','zipcode_lookup');
+        addressField.style.width = parentWidth + 'px';
+    }
+}
+
 function formatResult(state) {
     let state1 = state.properties;
     return '<div>' + state1.city + ' - ' + state1.postcode + ' - ' + state1.name + ' - ' + state1.context + '</div>';

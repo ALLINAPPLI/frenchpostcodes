@@ -171,6 +171,9 @@ function frenchcodepostaux_civicrm_buildForm($formName, &$form) {
     CRM_Frenchpostcodes_Parser::buildAddressForm($form);
     CRM_Frenchpostcodes_Parser::setStreetAddressOnForm($form);
   }
+  if($formName == 'CRM_Profile_Form_Edit') {
+    CRM_Core_Resources::singleton()->addScriptFile('frenchcodepostaux', 'postcodes.js');
+  }
 }
 
 
@@ -187,9 +190,23 @@ function frenchcodepostaux_civicrm_alterContent(  &$content, $context, $tplName,
     $template_fr->assign('zipcodesss', json_encode(frenchcodepostaux_get_all()));
     $content .= $template_fr->fetch('CRM/Contact/Form/Edit/postcode_contact_js.tpl');
   }
+  if($object instanceof CRM_Profile_Form_Edit) {
+    $template_fr = CRM_Core_Smarty::singleton();
+    $template_fr->assign('zipcodesss', json_encode(frenchcodepostaux_get_all()));
+    $content .= $template_fr->fetch('CRM/postcode_profile.tpl');
+  }
 }
 
 function frenchcodepostaux_get_all() { }
+  
+  function frenchcodepostaux_civicrm_postProcess($formName, $form) {
+    if($formName == 'CRM_Profile_Form_Edit') {
+      echo '<pre>';
+      var_dump($form);
+      die();
+      echo '</pre>';
+    }
+  }
 
 function frenchcodepostaux_civicrm_pageRun( &$page ) {
   if ($page instanceof CRM_Contact_Page_View_Summary) {
