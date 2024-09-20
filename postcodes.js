@@ -12,10 +12,10 @@ if(wpFrontOrNot) {
 }
 
 // Ajout de la valeur par défaut du champ personnalisé Champs_saisie_adresse_France:Saisie_Adresse_api_BAN
-document.addEventListener('DOMContentLoaded', function () {
+/*document.addEventListener('DOMContentLoaded', function () {
    let linkSelect = document.querySelectorAll('#s2id_zipcode_lookup > a');
     linkSelect[0].textContent = addressField.value;
-});
+});*/
 
 function formatResult(state) {
     let state1 = state.properties;
