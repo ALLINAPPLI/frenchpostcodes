@@ -205,6 +205,7 @@ function frenchcodepostaux_get_all() { }
     $verifKey = array_key_exists($customFieldApiBan,$elementIndex);
     if($formName == 'CRM_Profile_Form_Edit' && $verifKey == TRUE) {
       $submitValuesForm = $form->getVar('_submitValues');
+      $emailContactProfil = $form->getVar('_submitValues')['email-Primary'];
       $valueRequestApiBan = '';
       foreach ($submitValuesForm as $key => $value) {
         if($key == $customFieldApiBan) {
@@ -212,12 +213,7 @@ function frenchcodepostaux_get_all() { }
         }
       }
       
-      CRM_Frenchpostcodes_Parser::callApiBanWithLatLon($valueRequestApiBan);
-      echo '<pre>';
-      var_dump($valueRequestApiBan);
-      //var_dump($form);
-      die();
-      echo '</pre>';
+      CRM_Frenchpostcodes_Utils::retrieveContactIdOfProfile($valueRequestApiBan,$emailContactProfil);
     }
   }
 

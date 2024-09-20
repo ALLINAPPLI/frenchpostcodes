@@ -79,6 +79,9 @@ class CRM_Frenchpostcodes_Parser {
         }
     }
     
+    /**
+     * call API BAN with reverse option and lattitude / longitude data
+     */
     public static function callApiBanWithLatLon($valueRequestApiBan) {
       $lattitudeLongitude = CRM_Frenchpostcodes_Utils::getLatLonAfterSubmitForm($valueRequestApiBan);
       $client = new Client([
@@ -121,17 +124,10 @@ class CRM_Frenchpostcodes_Parser {
       }
   
       if($response->getStatusCode() == 200) {
-        Civi::log()->debug('$response $response ' . print_r($response,1));
         try {
           $body = $response->getBody();
-          Civi::log()->debug('$response $body ' . print_r($body,1));
           $content = json_decode($body->getContents(),TRUE);
-          
-          // récupérer le label dans le tableau retour de guzzle
-          // vérifer que ce label correspond à ce qui est noté dans $valueRequestApiBan
-          // si identique on fais la mise à jour du contact
-          
-          Civi::log()->debug('$response $content ' . print_r($content,1));
+          return $content;
         } catch (Exception $e) {
           // fail silently for now
         }
