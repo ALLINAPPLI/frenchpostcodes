@@ -11,12 +11,6 @@ if(wpFrontOrNot) {
     }
 }
 
-// Ajout de la valeur par défaut du champ personnalisé Champs_saisie_adresse_France:Saisie_Adresse_api_BAN
-/*document.addEventListener('DOMContentLoaded', function () {
-   let linkSelect = document.querySelectorAll('#s2id_zipcode_lookup > a');
-    linkSelect[0].textContent = addressField.value;
-});*/
-
 function formatResult(state) {
     let state1 = state.properties;
     return '<div>' + state1.city + ' - ' + state1.postcode + ' - ' + state1.name + ' - ' + state1.context + '</div>';
@@ -69,6 +63,11 @@ function zipcodes_fill_fr(blockId) {
     }
     cj('#address_' + blockId + '_postal_code').val(words[1]);
     cj('#address_' + blockId + '_city').val(words[0]);
+
+    // profil adresse API BAN
+    cj('#street_address-Primary').val(words[2]);
+    cj('#city-Primary').val(words[0]);
+    cj('#postal_code-Primary').val(words[1]);
 }
 
 function init_postcodeBlock_fr(blockId, address_table_id) {
@@ -132,10 +131,13 @@ function init_postcodeBlock_fr(blockId, address_table_id) {
     });
     zipcodes_addOnChange_fr(blockId);
 
-     /*----- affichage de la section déroulante ---*/
-    
-    cj('#address_' + blockId + '_country_id').change(function(e) {
+    // default value profil API BAN edit
+    let linkSelect = document.querySelectorAll('#s2id_zipcode_lookup > a');
+    let spanSelect = linkSelect[0].firstElementChild;
+    spanSelect.innerHTML = '<div>Saisissez votre adresse</div>'
 
+    /*----- affichage de la section déroulante ---*/
+    cj('#address_' + blockId + '_country_id').change(function(e) {
         var housenr_td = cj('#address_'+blockId+'_street_number').parent();
         var street_name_td = cj('#address_'+blockId+'_street_name').parent();
         

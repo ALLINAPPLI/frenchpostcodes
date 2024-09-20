@@ -171,8 +171,9 @@ function frenchcodepostaux_civicrm_buildForm($formName, &$form) {
     CRM_Frenchpostcodes_Parser::buildAddressForm($form);
     CRM_Frenchpostcodes_Parser::setStreetAddressOnForm($form);
   }
-  if($formName == 'CRM_Profile_Form_Edit') {
-    Civi::cache()->clear();
+  
+  $idUFGroup = CRM_Frenchpostcodes_Utils::getUFGroupApiBan();
+  if($formName == 'CRM_Profile_Form_Edit' && $form->getVar('_gid') == $idUFGroup) {
     CRM_Core_Resources::singleton()->addScriptFile('frenchcodepostaux', 'postcodes.js');
   }
 }
@@ -191,6 +192,7 @@ function frenchcodepostaux_civicrm_alterContent(  &$content, $context, $tplName,
     $template_fr->assign('zipcodesss', json_encode(frenchcodepostaux_get_all()));
     $content .= $template_fr->fetch('CRM/Contact/Form/Edit/postcode_contact_js.tpl');
   }
+  
   if($object instanceof CRM_Profile_Form_Edit) {
     $template_fr = CRM_Core_Smarty::singleton();
     $template_fr->assign('zipcodesss', json_encode(frenchcodepostaux_get_all()));
@@ -202,24 +204,24 @@ function frenchcodepostaux_get_all() { }
   
   function frenchcodepostaux_civicrm_postProcess($formName, $form) {
   
-    // on cherche si le champ personnalisé propre au calcul de l'adresse avec l'api BAN
-    // est présent sur le profil
-    $customFieldApiBan = CRM_Frenchpostcodes_Utils::getCustomfieldByNameMachine();
-    $elementIndex = $form->_elementIndex;
-    $verifKey = array_key_exists($customFieldApiBan,$elementIndex);
-    
+    // on cherche si le profil API BAN
+    $idUFGroup = CRM_Frenchpostcodes_Utils::getUFGroupApiBan();
     // on lance le traitement uniquement sur les profils avec le champ perso présent
-    if($formName == 'CRM_Profile_Form_Edit' && $verifKey == TRUE) {
+    if($formName == 'CRM_Profile_Form_Edit' && $form->getVar('_gid') == $idUFGroup) {
       $submitValuesForm = $form->getVar('_submitValues');
       $emailContactProfil = $form->getVar('_submitValues')['email-Primary'];
       $valueRequestApiBan = '';
+      
+      // on cherche le champ personnalisé spécifique qui encapsule l'appel à l'API BAN
+      $customFieldApiBan = CRM_Frenchpostcodes_Utils::getCustomfieldByNameMachine();
       foreach ($submitValuesForm as $key => $value) {
         if($key == $customFieldApiBan) {
+          
+          // on récupère le résultat de la requête API BAN pour traitement ultérieure à la soumission du formulaire
           $valueRequestApiBan = $value;
         }
       }
       
-      CRM_Frenchpostcodes_Utils::retrieveContactIdOfProfile($valueRequestApiBan,$emailContactProfil);
     }
   }
 
