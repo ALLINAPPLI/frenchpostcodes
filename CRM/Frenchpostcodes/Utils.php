@@ -2,6 +2,12 @@
   
   class CRM_Frenchpostcodes_Utils {
   
+    /**
+     * récupération du nom machine du champ personnalisé
+     * @return string
+     * @throws \CRM_Core_Exception
+     * @throws \Civi\API\Exception\UnauthorizedException
+     */
     public static function getCustomfieldByNameMachine() {
       $stringCustomField = 'custom_';
       $customFields = \Civi\Api4\CustomField::get(FALSE)
@@ -12,14 +18,30 @@
       
       return $stringCustomField . $customFields['id'];
     }
-    
+  
+    /**
+     * récupération de la lattitude et de la longitude suite au call vers l'API BAN
+     * @param $stringResponse
+     * @return array
+     */
     public static function getLatLonAfterSubmitForm($stringResponse) {
       $arrayResponse = explode('/', $stringResponse);
       $arrayTrim = array_map('trim',$arrayResponse);
       $latLon = array_splice($arrayTrim,-2,2);
       return $latLon;
     }
-    
+  
+    /**
+     * méthode pour créer l'adresse
+     * @param $trimResponse
+     * @param $contactId
+     * @param $location
+     * @param $primary
+     *
+     * @return void
+     * @throws \CRM_Core_Exception
+     * @throws \Civi\API\Exception\UnauthorizedException
+     */
     public static function createAddressForContact($trimResponse,$contactId,$location,$primary) {
       $addAddress = \Civi\Api4\Address::create(FALSE)
         ->addValue('location_type_id', $location)
@@ -31,6 +53,17 @@
         ->execute();
     }
   
+    /**
+     * méthode pour vérifier si l'adresse du contact existe
+     * si pas d'adresse on créé une nouvelle adresse principale pour le contact
+     * si il y a des adresses pour le contact, on créé une nouvelle adresse autre pour le contact
+     * @param $trimResponse
+     * @param $contactId
+     *
+     * @return void
+     * @throws \CRM_Core_Exception
+     * @throws \Civi\API\Exception\UnauthorizedException
+     */
     public static function checkAddressContact($trimResponse,$contactId) {
       $addresses = \Civi\Api4\Address::get(FALSE)
         ->addSelect('*', 'custom.*')
@@ -50,7 +83,16 @@
       
       }
     }
-    
+  
+    /**
+     * méthode pour retrouver l'identifiant du contact
+     * @param $stringResponse
+     * @param $emailContactProfil
+     *
+     * @return void
+     * @throws \CRM_Core_Exception
+     * @throws \Civi\API\Exception\UnauthorizedException
+     */
     public static function retrieveContactIdOfProfile($stringResponse,$emailContactProfil) {
       $arrayResponse = explode('/', $stringResponse);
       $arrayTrim = array_map('trim',$arrayResponse);

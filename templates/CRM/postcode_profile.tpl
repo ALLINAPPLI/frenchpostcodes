@@ -1,5 +1,5 @@
 {*
-* File for the inline address block french
+* File for the profile
 *}
 
 {literal}

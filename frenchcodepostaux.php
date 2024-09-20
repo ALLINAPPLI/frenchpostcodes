@@ -172,6 +172,7 @@ function frenchcodepostaux_civicrm_buildForm($formName, &$form) {
     CRM_Frenchpostcodes_Parser::setStreetAddressOnForm($form);
   }
   if($formName == 'CRM_Profile_Form_Edit') {
+    Civi::cache()->clear();
     CRM_Core_Resources::singleton()->addScriptFile('frenchcodepostaux', 'postcodes.js');
   }
 }
@@ -200,9 +201,14 @@ function frenchcodepostaux_civicrm_alterContent(  &$content, $context, $tplName,
 function frenchcodepostaux_get_all() { }
   
   function frenchcodepostaux_civicrm_postProcess($formName, $form) {
+  
+    // on cherche si le champ personnalisé propre au calcul de l'adresse avec l'api BAN
+    // est présent sur le profil
     $customFieldApiBan = CRM_Frenchpostcodes_Utils::getCustomfieldByNameMachine();
     $elementIndex = $form->_elementIndex;
     $verifKey = array_key_exists($customFieldApiBan,$elementIndex);
+    
+    // on lance le traitement uniquement sur les profils avec le champ perso présent
     if($formName == 'CRM_Profile_Form_Edit' && $verifKey == TRUE) {
       $submitValuesForm = $form->getVar('_submitValues');
       $emailContactProfil = $form->getVar('_submitValues')['email-Primary'];

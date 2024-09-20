@@ -1,12 +1,21 @@
 const wpFrontOrNot = document.body.classList.contains('page-template-default');
+const addressField = document.querySelector('[data-crm-custom="Champs_saisie_adresse_France:Saisie_Adresse_api_BAN"]');
+
+// traitement uniquement sur le front pour ajouter l'identifiant #zipcode_lookup
+// au champ perso spécifique pour que le traitement API BAN fonctionne correctement
 if(wpFrontOrNot) {
-    const addressField = document.querySelector('[data-crm-custom="Champs_saisie_adresse_France:Saisie_Adresse_api_BAN"]');
     if(addressField){
         let parentWidth = addressField.parentNode.clientWidth;
         addressField.setAttribute('id','zipcode_lookup');
         addressField.style.width = parentWidth + 'px';
     }
 }
+
+// Ajout de la valeur par défaut du champ personnalisé Champs_saisie_adresse_France:Saisie_Adresse_api_BAN
+document.addEventListener('DOMContentLoaded', function () {
+   let linkSelect = document.querySelectorAll('#s2id_zipcode_lookup > a');
+    linkSelect[0].textContent = addressField.value;
+});
 
 function formatResult(state) {
     let state1 = state.properties;
@@ -52,6 +61,7 @@ function zipcodes_fill_fr(blockId) {
     const words = zipcode.split("/");
     let ville = words[0].trim();
     let codePost = words[2].trim();
+
     if (ville == codePost) {
         cj('#address_' + blockId + '_street_address').val("");
     }else{
@@ -71,7 +81,6 @@ function init_postcodeBlock_fr(blockId, address_table_id) {
     
     var country = 1076;
     cj('#address_' + blockId + '_country_id').val(country);
-    
 
     /*---Barre de recherche ---*/
     cj('#zipcode_lookup').select2({
