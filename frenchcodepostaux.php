@@ -201,29 +201,6 @@ function frenchcodepostaux_civicrm_alterContent(  &$content, $context, $tplName,
 }
 
 function frenchcodepostaux_get_all() { }
-  
-  function frenchcodepostaux_civicrm_postProcess($formName, $form) {
-  
-    // on cherche si le profil API BAN
-    $idUFGroup = CRM_Frenchpostcodes_Utils::getUFGroupApiBan();
-    // on lance le traitement uniquement sur les profils avec le champ perso présent
-    if($formName == 'CRM_Profile_Form_Edit' && $form->getVar('_gid') == $idUFGroup) {
-      $submitValuesForm = $form->getVar('_submitValues');
-      $emailContactProfil = $form->getVar('_submitValues')['email-Primary'];
-      $valueRequestApiBan = '';
-      
-      // on cherche le champ personnalisé spécifique qui encapsule l'appel à l'API BAN
-      $customFieldApiBan = CRM_Frenchpostcodes_Utils::getCustomfieldByNameMachine();
-      foreach ($submitValuesForm as $key => $value) {
-        if($key == $customFieldApiBan) {
-          
-          // on récupère le résultat de la requête API BAN pour traitement ultérieure à la soumission du formulaire
-          $valueRequestApiBan = $value;
-        }
-      }
-      
-    }
-  }
 
 function frenchcodepostaux_civicrm_pageRun( &$page ) {
   if ($page instanceof CRM_Contact_Page_View_Summary) {
