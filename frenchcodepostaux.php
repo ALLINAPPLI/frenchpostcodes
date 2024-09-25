@@ -193,13 +193,7 @@ function frenchcodepostaux_civicrm_alterContent(  &$content, $context, $tplName,
     $content .= $template_fr->fetch('CRM/Contact/Form/Edit/postcode_contact_js.tpl');
   }
   
-  if($object instanceof CRM_Profile_Form_Edit) {
-    $template_fr = CRM_Core_Smarty::singleton();
-    $template_fr->assign('zipcodesss', json_encode(frenchcodepostaux_get_all()));
-    $content .= $template_fr->fetch('CRM/postcode_profile.tpl');
-  }
-  
-  if($object instanceof CRM_Contribute_Form_Contribution_Main) {
+  if($object instanceof CRM_Profile_Form_Edit || $object instanceof CRM_Contribute_Form_Contribution_Main) {
     $template_fr = CRM_Core_Smarty::singleton();
     $template_fr->assign('zipcodesss', json_encode(frenchcodepostaux_get_all()));
     $content .= $template_fr->fetch('CRM/postcode_profile.tpl');
