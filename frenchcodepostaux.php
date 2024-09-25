@@ -173,11 +173,7 @@ function frenchcodepostaux_civicrm_buildForm($formName, &$form) {
   }
   
   $idUFGroup = CRM_Frenchpostcodes_Utils::getUFGroupApiBan();
-  if($formName == 'CRM_Profile_Form_Edit' && $form->getVar('_gid') == $idUFGroup) {
-    CRM_Core_Resources::singleton()->addScriptFile('frenchcodepostaux', 'postcodes.js');
-  }
-  
-  if($formName == 'CRM_Contribute_Form_Contribution_Main') {
+  if($formName == 'CRM_Profile_Form_Edit' && $form->getVar('_gid') == $idUFGroup || $formName == 'CRM_Contribute_Form_Contribution_Main') {
     CRM_Core_Resources::singleton()->addScriptFile('frenchcodepostaux', 'postcodes.js');
   }
 }
