@@ -1,5 +1,8 @@
 <?php
-
+  use GuzzleHttp\Client;
+  use GuzzleHttp\Exception\ServerException;
+  use Http\Adapter\Guzzle6\Client as GuzzleAdapter;
+  
 class CRM_Frenchpostcodes_Parser {
 
     protected $street_units = array();
@@ -74,6 +77,61 @@ class CRM_Frenchpostcodes_Parser {
             }
         }
         }
+    }
+    
+    /**
+     * call API BAN with reverse option and lattitude / longitude data
+     */
+    public static function callApiBanWithLatLon($valueRequestApiBan) {
+      $lattitudeLongitude = CRM_Frenchpostcodes_Utils::getLatLonAfterSubmitForm($valueRequestApiBan);
+      $client = new Client([
+        // Base URI is used with relative requests
+        'base_uri' => 'https://api-adresse.data.gouv.fr',
+        // You can set any number of default request options.
+        'timeout'  => 2.0,
+      ]);
+      
+      $params = [
+        'query' => [
+          'lon' => $lattitudeLongitude[0],
+          'lat' => $lattitudeLongitude[1]
+        ]
+      ];
+  
+      $success = FALSE;
+      $retry = 0;
+      $maxretry = 3;
+      while (!$success && $retry <= $maxretry) {
+        try {
+          $response = $client->request('GET','/reverse/', $params);
+          $success = TRUE;
+        }
+        catch(ServerException $se) {
+          $retry += 1;
+      
+          if ($retry <= $maxretry) {
+            // try again with a delay in case server is not available
+            $wait = 2*$retry;
+            Civi::log()->debug('Guzzle 500 -> retry #' . $retry . ' wait ' . $wait . 's');
+            sleep($wait);
+          }
+          else {
+            // too many attempts
+            Civi::log()->debug('Guzzle 500 -> too many attempts -- failed at GET https://api-adresse.data.gouv.fr/reverse/');
+            throw $se;
+          }
+        }
+      }
+  
+      if($response->getStatusCode() == 200) {
+        try {
+          $body = $response->getBody();
+          $content = json_decode($body->getContents(),TRUE);
+          return $content;
+        } catch (Exception $e) {
+          // fail silently for now
+        }
+      }
     }
 }
 

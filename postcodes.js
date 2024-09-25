@@ -1,3 +1,16 @@
+const wpFrontOrNot = document.body.classList.contains('page-template-default');
+const addressField = document.querySelector('[data-crm-custom="Champs_saisie_adresse_France:Saisie_Adresse_api_BAN"]');
+
+// traitement uniquement sur le front pour ajouter l'identifiant #zipcode_lookup
+// au champ perso spécifique pour que le traitement API BAN fonctionne correctement
+if(wpFrontOrNot) {
+    if(addressField){
+        let parentWidth = addressField.parentNode.clientWidth;
+        addressField.setAttribute('id','zipcode_lookup');
+        addressField.style.width = parentWidth + 'px';
+    }
+}
+
 function formatResult(state) {
     let state1 = state.properties;
     return '<div>' + state1.city + ' - ' + state1.postcode + ' - ' + state1.name + ' - ' + state1.context + '</div>';
@@ -32,7 +45,8 @@ function zipcodes_addOnChange_fr(blockId) {
 
 function functionId(state) {
     let state1 = state.properties;
-    return state1.city + ' / ' + state1.postcode + ' / ' + state1.name + ' / ' + state1.context + ' / ' + state1.x + ' / ' + state1.y; 
+    let geometry = state.geometry;
+    return state1.city + ' / ' + state1.postcode + ' / ' + state1.name + ' / ' + state1.context + ' / ' + state1.x + ' / ' + state1.y + ' / ' + geometry.coordinates[0] + ' / ' + geometry.coordinates[1];
 }
 
 function zipcodes_fill_fr(blockId) {
@@ -41,6 +55,7 @@ function zipcodes_fill_fr(blockId) {
     const words = zipcode.split("/");
     let ville = words[0].trim();
     let codePost = words[2].trim();
+
     if (ville == codePost) {
         cj('#address_' + blockId + '_street_address').val("");
     }else{
@@ -48,6 +63,11 @@ function zipcodes_fill_fr(blockId) {
     }
     cj('#address_' + blockId + '_postal_code').val(words[1]);
     cj('#address_' + blockId + '_city').val(words[0]);
+
+    // profil adresse API BAN
+    cj('#street_address-Primary').val(words[2]);
+    cj('#city-Primary').val(words[0]);
+    cj('#postal_code-Primary').val(words[1]);
 }
 
 function init_postcodeBlock_fr(blockId, address_table_id) {
@@ -60,7 +80,6 @@ function init_postcodeBlock_fr(blockId, address_table_id) {
     
     var country = 1076;
     cj('#address_' + blockId + '_country_id').val(country);
-    
 
     /*---Barre de recherche ---*/
     cj('#zipcode_lookup').select2({
@@ -112,10 +131,13 @@ function init_postcodeBlock_fr(blockId, address_table_id) {
     });
     zipcodes_addOnChange_fr(blockId);
 
-     /*----- affichage de la section déroulante ---*/
-    
-    cj('#address_' + blockId + '_country_id').change(function(e) {
+    // default value profil API BAN edit
+    let linkSelect = document.querySelectorAll('#s2id_zipcode_lookup > a');
+    let spanSelect = linkSelect[0].firstElementChild;
+    spanSelect.innerHTML = '<div>Saisissez votre adresse</div>'
 
+    /*----- affichage de la section déroulante ---*/
+    cj('#address_' + blockId + '_country_id').change(function(e) {
         var housenr_td = cj('#address_'+blockId+'_street_number').parent();
         var street_name_td = cj('#address_'+blockId+'_street_name').parent();
         
