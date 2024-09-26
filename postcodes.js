@@ -1,6 +1,7 @@
-const wpFrontOrNot = document.body.classList.contains('page-template-default');
-const addressField = document.querySelector('[data-crm-custom="Champs_saisie_adresse_France:Saisie_Adresse_api_BAN"]');
+const addressField = document.querySelector('.crm-profile-name-Profil_adresse_avec_API_BAN [data-crm-custom="Champs_saisie_adresse_France:Saisie_Adresse_api_BAN"]');
 
+// utilisation de l'API BAN uniquement si il trouve le champ personnalisé spécifique
+// dans le profil avec le bon name
 if(addressField){
     let parentWidth = addressField.parentNode.clientWidth;
     addressField.setAttribute('id','zipcode_lookup');
