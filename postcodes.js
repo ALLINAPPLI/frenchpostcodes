@@ -118,7 +118,7 @@ function init_postcodeBlock_fr(blockId, address_table_id) {
         formatSelection: formatSelection,
         formatNoMatches: formatNoResult,
         formatAjaxError: formatAjaxErreur,
-        formatInputTooShort: formatInputSearch,
+        formatInputTooShort: null,
         dropdownCssClass: "bigdrop",
         /** Id : option OBLIGATOIRE pour pouvoir selectionner une valeur  */
         id: functionId,
