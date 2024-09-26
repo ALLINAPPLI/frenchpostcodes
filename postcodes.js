@@ -1,14 +1,10 @@
 const wpFrontOrNot = document.body.classList.contains('page-template-default');
 const addressField = document.querySelector('[data-crm-custom="Champs_saisie_adresse_France:Saisie_Adresse_api_BAN"]');
 
-// traitement uniquement sur le front pour ajouter l'identifiant #zipcode_lookup
-// au champ perso spécifique pour que le traitement API BAN fonctionne correctement
-if(wpFrontOrNot) {
-    if(addressField){
-        let parentWidth = addressField.parentNode.clientWidth;
-        addressField.setAttribute('id','zipcode_lookup');
-        addressField.style.width = parentWidth + 'px';
-    }
+if(addressField){
+    let parentWidth = addressField.parentNode.clientWidth;
+    addressField.setAttribute('id','zipcode_lookup');
+    addressField.style.width = parentWidth + 'px';
 }
 
 function formatResult(state) {
