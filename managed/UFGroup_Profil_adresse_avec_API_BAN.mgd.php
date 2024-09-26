@@ -97,6 +97,21 @@
         'version' => 4,
         'values' => [
           'uf_group_id.name' => 'Profil_adresse_avec_API_BAN',
+          'field_name' => 'supplemental_address_1',
+          'label' => E::ts("Complément d'adresse 1 (Primary)"),
+          'field_type' => 'Contact',
+        ],
+      ],
+    ],
+    [
+      'name' => 'UFGroup_Profil_adresse_avec_API_BAN_UFField_6',
+      'entity' => 'UFField',
+      'cleanup' => 'unused',
+      'update' => 'unmodified',
+      'params' => [
+        'version' => 4,
+        'values' => [
+          'uf_group_id.name' => 'Profil_adresse_avec_API_BAN',
           'field_name' => 'postal_code',
           'label' => E::ts('Code postal (Primary)'),
           'field_type' => 'Contact',
@@ -104,7 +119,7 @@
       ],
     ],
     [
-      'name' => 'UFGroup_Profil_adresse_avec_API_BAN_UFField_6',
+      'name' => 'UFGroup_Profil_adresse_avec_API_BAN_UFField_7',
       'entity' => 'UFField',
       'cleanup' => 'unused',
       'update' => 'unmodified',
@@ -119,7 +134,7 @@
       ],
     ],
     [
-      'name' => 'UFGroup_Profil_adresse_avec_API_BAN_UFField_7',
+      'name' => 'UFGroup_Profil_adresse_avec_API_BAN_UFField_8',
       'entity' => 'UFField',
       'cleanup' => 'unused',
       'update' => 'unmodified',
