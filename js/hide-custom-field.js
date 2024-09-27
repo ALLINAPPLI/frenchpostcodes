@@ -1,5 +1,5 @@
 (function($) {
-    console.log('HIDE CUSTOM FIELD');
+    //console.log('HIDE CUSTOM FIELD');
     /*
     * masquer le bloc Saisie adresse france dans summary contact
      */
