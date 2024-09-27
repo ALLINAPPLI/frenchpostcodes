@@ -12,6 +12,7 @@ use CRM_Frenchcodepostaux_ExtensionUtil as E;
  */
 function frenchcodepostaux_civicrm_config(&$config) {
   _frenchcodepostaux_civix_civicrm_config($config);
+  CRM_Core_Resources::singleton()->addScriptFile('frenchcodepostaux', 'js/hide-custom-field.js');
 }
 
 /**
