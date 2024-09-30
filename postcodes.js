@@ -27,7 +27,7 @@ function formatRecherche() {
 }
 
 function formatAjaxErreur() {
-    return 'Erreur de chargement des données';
+    return 'Saisissez plus de caractères';
 }
 
 function formatInputSearch() {

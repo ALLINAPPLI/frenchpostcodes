@@ -1,5 +1,5 @@
 <?php
-  use CRM_Frenchcodepostaux_ExtensionUtil as E;
+  use CRM_Frenchpostcodes_ExtensionUtil as E;
   return [
     [
       'name' => 'CustomGroup_Champs_saisie_adresse_France',
