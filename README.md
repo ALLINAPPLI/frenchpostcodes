@@ -1,4 +1,4 @@
-# frenchcodepostaux
+# frenchcodeposts
 
 ![Screenshot](/images/FrenchCodePostaux.png)
 ![Screenshot](/images/CodePostaux.png)
