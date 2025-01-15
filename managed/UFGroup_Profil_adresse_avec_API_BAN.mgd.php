@@ -19,6 +19,8 @@
           'description' => E::ts("Profil spécifique pour la gestion des adresses avec l'API BAN française pour le calcul des adresses."),
           'created_date' => '2024-09-20 20:08:34',
           'add_cancel_button' => FALSE,
+          'is_active' => TRUE,
+          'is_cms_user' => TRUE,
         ],
         'match' => [
           'name',
